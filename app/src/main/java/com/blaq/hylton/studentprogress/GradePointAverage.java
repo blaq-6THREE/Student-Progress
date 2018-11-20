@@ -20,10 +20,12 @@ public class GradePointAverage extends Fragment
     private Spinner mSpinner;
     private Button mButton;
     private LinearLayout masterLinearLayout;
+    private int counter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_grade_point_average, container, false);
+        counter = 4;
 
         mSpinner = view.findViewById(R.id.grades_spinner_1);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.grade_array, android.R.layout.simple_spinner_item);
@@ -37,10 +39,6 @@ public class GradePointAverage extends Fragment
             @Override
             public void onClick(View view)
             {
-//                TextView textView = new TextView(getContext());
-//                textView.setText("New");
-//
-//                masterLinearLayout.addView(textView);
                 createView(masterLinearLayout);
             }
         });
@@ -56,6 +54,7 @@ public class GradePointAverage extends Fragment
 
         //Create EditText
         EditText courseEditText = new EditText(getContext());
+        courseEditText.setHint("course" + counter);
 
         //Create Spinner and populate it
         Spinner spinner = new Spinner(getContext());
@@ -64,7 +63,9 @@ public class GradePointAverage extends Fragment
         spinner.setAdapter(adapter);
 
         //Create EditText
+        counter = counter + 1;
         EditText creditEditText = new EditText(getContext());
+        creditEditText.setHint("credit" + counter);
 
         linearLayout.addView(courseEditText);
         linearLayout.addView(spinner);
