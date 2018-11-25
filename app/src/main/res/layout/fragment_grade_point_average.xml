@@ -36,6 +36,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"/>
 
+            <TextView
+                android:id="@+id/grade_point_average_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textSize="80sp"
+                android:textColor="#567D46"
+                android:text="2.3"/>
+
         </LinearLayout>
 
     </ScrollView>

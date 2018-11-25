@@ -15,7 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class GradePointAverage extends Fragment
@@ -23,12 +26,11 @@ public class GradePointAverage extends Fragment
     private Button mButton;
     private FloatingActionButton fab;
     private LinearLayout masterLinearLayout;
+    private TextView mGPATextView;
 
     private int counter;
     private int creditsID;
     private int spinnerID;
-
-    private double gradeValue;
 
     private ArrayList<EditText> mEditTextList;
     private ArrayList<Spinner> mSpinnerList;
@@ -39,12 +41,13 @@ public class GradePointAverage extends Fragment
 
         mButton = view.findViewById(R.id.button);
         fab = view.findViewById(R.id.floating_action_button);
+        mGPATextView = view.findViewById(R.id.grade_point_average_textview);
+        mGPATextView.setVisibility(View.GONE);
         masterLinearLayout = view.findViewById(R.id.linear_layout_master);
 
-        counter = masterLinearLayout.getChildCount();
         creditsID = 0;
         spinnerID = 0;
-        gradeValue = 0.0;
+        counter = masterLinearLayout.getChildCount();
 
         mEditTextList = new ArrayList<>();
         mSpinnerList = new ArrayList<>();
@@ -71,6 +74,8 @@ public class GradePointAverage extends Fragment
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mGPATextView.setText("" + calculateGPA());
+                mGPATextView.setVisibility(View.VISIBLE);
                 calculateGPA();
             }
         });
@@ -126,11 +131,9 @@ public class GradePointAverage extends Fragment
         bossLayout.addView(linearLayout);
     }
 
-    /*
-
-     */
     public double calculateGPA()
     {
+        NumberFormat numberFormat = new DecimalFormat("#0.00");
         double gradePoints = 0;
         int totalCredits = 0;
         double gpa;
@@ -155,7 +158,7 @@ public class GradePointAverage extends Fragment
         Log.i("FAB", "onClick: gradePoints " + gradePoints);
         Log.i("FAB", "onClick: gpa " + gpa);
 
-        return gpa;
+        return Double.valueOf(numberFormat.format(gpa));
     }
 
     public double gradeValueFromSpinner(String letterGrade)
