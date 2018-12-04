@@ -1,5 +1,7 @@
 package com.blaq.hylton.studentprogress;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -187,6 +190,8 @@ public class GradePointAverage extends Fragment
                 gradePoints = gradePoints + (a * b);
 
                 totalCredits = totalCredits + Integer.valueOf(mEditTextList.get(i).getText().toString());   //FOR EACH CLASS = sum credits up
+
+                hideKeyboardFrom(getContext(), mView);
             }
         }
 
@@ -224,5 +229,10 @@ public class GradePointAverage extends Fragment
             default:
                 return 0.0;
         }
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
