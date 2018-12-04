@@ -145,7 +145,7 @@ public class GradePointAverage extends Fragment
         NumberFormat numberFormat = new DecimalFormat("#0.00");
         double gradePoints = 0;
         int totalCredits = 0;
-        double gpa;
+        double gpa = 0;
 
         double a;
         double b;
@@ -163,6 +163,12 @@ public class GradePointAverage extends Fragment
                 {
                     mEditTextList.get(i).setBackgroundTintList(colorStateList);
                 }
+                gradePoints = 0;
+                totalCredits = 0;
+                gpa = 0;
+
+                mEditTextList.get(i).setHint("Please Fill Field");
+                mEditTextList.get(i).setHintTextColor(Color.RED);
             }
 
             else
@@ -178,17 +184,13 @@ public class GradePointAverage extends Fragment
                 b = gradeValueFromSpinner(mSpinnerList.get(i).getSelectedItem().toString());
 
                 //FOR EACH CLASS = credit * grade
-                gradePoints = gradePoints + a * b;
+                gradePoints = gradePoints + (a * b);
 
                 totalCredits = totalCredits + Integer.valueOf(mEditTextList.get(i).getText().toString());   //FOR EACH CLASS = sum credits up
             }
         }
 
         gpa = gradePoints / totalCredits;
-
-        Log.i("FAB", "onClick: totalCredits " + totalCredits);
-        Log.i("FAB", "onClick: gradePoints " + gradePoints);
-        Log.i("FAB", "onClick: gpa " + gpa);
 
         return Double.valueOf(numberFormat.format(gpa));
     }
