@@ -1,12 +1,17 @@
 package com.blaq.hylton.studentprogress;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,19 +36,20 @@ public class GradePointAverage extends Fragment
     private int counter;
     private int creditsID;
     private int spinnerID;
+    private View mView;
 
     private ArrayList<EditText> mEditTextList;
     private ArrayList<Spinner> mSpinnerList;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_grade_point_average, container, false);
+        mView = inflater.inflate(R.layout.fragment_grade_point_average, container, false);
 
-        mButton = view.findViewById(R.id.button);
-        fab = view.findViewById(R.id.floating_action_button);
-        mGPATextView = view.findViewById(R.id.grade_point_average_textview);
+        mButton = mView.findViewById(R.id.button);
+        fab = mView.findViewById(R.id.floating_action_button);
+        mGPATextView = mView.findViewById(R.id.grade_point_average_textview);
         mGPATextView.setVisibility(View.GONE);
-        masterLinearLayout = view.findViewById(R.id.linear_layout_master);
+        masterLinearLayout = mView.findViewById(R.id.linear_layout_master);
 
         creditsID = 0;
         spinnerID = 0;
@@ -56,11 +62,10 @@ public class GradePointAverage extends Fragment
             @Override
             public void onClick(View view)
             {
-
                 if (masterLinearLayout.getChildCount() >= 10)
                 {
-                    Snackbar mySnackbar = Snackbar.make(view, "10 Classes is MAX", Snackbar.LENGTH_LONG);
-                    mySnackbar.show();
+                    Snackbar snackbar = Snackbar.make(view, "10 Classes is MAX", Snackbar.LENGTH_LONG);
+                    snackbar.show();
                     mButton.setEnabled(false);
                 }
                 else
@@ -74,13 +79,13 @@ public class GradePointAverage extends Fragment
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mGPATextView.setText("" + calculateGPA());
+                mGPATextView.setText(String.valueOf(calculateGPA()));
                 mGPATextView.setVisibility(View.VISIBLE);
                 calculateGPA();
             }
         });
 
-        return view;
+        return mView;
     }
 
     private void createView(LinearLayout bossLayout, int counter, ArrayList<EditText> mEditTextList, ArrayList<Spinner> mSpinnerList)
@@ -94,14 +99,18 @@ public class GradePointAverage extends Fragment
 
         //Create linear layout first
         LinearLayout linearLayout = new LinearLayout(getContext());
+        linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setPadding(4, 4, 4, 4);
 
         //Create Course EditText
-        EditText courseEditText = new EditText(getContext());
-        courseEditText.setWidth(260);
-        courseEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-        courseEditText.setHint("Course " + counter);
+        TextView courseTextView = new TextView(getContext());
+        courseTextView.setWidth(260);
+        courseTextView.setTextSize(20f);
+        courseTextView.setTextColor(Color.BLUE);
+        courseTextView.setAllCaps(true);
+        courseTextView.setInputType(InputType.TYPE_CLASS_TEXT);
+        courseTextView.setHint("Course " + counter);
 
         //Create Spinner and populate it
         Spinner spinner = new Spinner(getContext());
@@ -120,7 +129,7 @@ public class GradePointAverage extends Fragment
         creditEditText.setId(creditsID);
 
         // Adding to the Child Layout
-        linearLayout.addView(courseEditText);
+        linearLayout.addView(courseTextView);
         linearLayout.addView(spinner);
         linearLayout.addView(creditEditText);
 
@@ -143,13 +152,36 @@ public class GradePointAverage extends Fragment
 
         for (int i = 0; i < masterLinearLayout.getChildCount(); i++)
         {
-            a = Integer.valueOf(mEditTextList.get(i).getText().toString());
-            b = gradeValueFromSpinner(mSpinnerList.get(i).getSelectedItem().toString());
+            if (TextUtils.isEmpty(mEditTextList.get(i).getText()))
+            {
+                Snackbar snackbar = Snackbar.make(mView, "Please fill all fields", Snackbar.LENGTH_LONG);
+                snackbar.show();
 
-            //FOR EACH CLASS = credit * grade
-            gradePoints = gradePoints + a * b;
+                ColorStateList colorStateList = ColorStateList.valueOf(Color.RED);
 
-            totalCredits = totalCredits + Integer.valueOf(mEditTextList.get(i).getText().toString());   //FOR EACH CLASS = sum credits up
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    mEditTextList.get(i).setBackgroundTintList(colorStateList);
+                }
+            }
+
+            else
+            {
+                ColorStateList colorStateList = ColorStateList.valueOf(Color.parseColor("#80d6ff"));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    mEditTextList.get(i).setBackgroundTintList(colorStateList);
+                }
+
+                a = Integer.valueOf(mEditTextList.get(i).getText().toString());
+                b = gradeValueFromSpinner(mSpinnerList.get(i).getSelectedItem().toString());
+
+                //FOR EACH CLASS = credit * grade
+                gradePoints = gradePoints + a * b;
+
+                totalCredits = totalCredits + Integer.valueOf(mEditTextList.get(i).getText().toString());   //FOR EACH CLASS = sum credits up
+            }
         }
 
         gpa = gradePoints / totalCredits;
