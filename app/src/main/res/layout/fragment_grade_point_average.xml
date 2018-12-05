@@ -29,12 +29,28 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/button"
-                android:text="@string/add_another_class"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"/>
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/button"
+                    android:text="@string/add_another_class"
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/delete_button"
+                    android:text="@string/delete_class"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/grade_point_average_textview"

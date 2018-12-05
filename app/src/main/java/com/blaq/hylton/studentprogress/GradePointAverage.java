@@ -11,9 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +22,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class GradePointAverage extends Fragment
 {
-    private Button mButton;
+    private Button mAddClassButton;
+    private Button mDeleteClassButton;
+
     private FloatingActionButton fab;
     private LinearLayout masterLinearLayout;
     private TextView mGPATextView;
@@ -44,11 +43,13 @@ public class GradePointAverage extends Fragment
     private ArrayList<EditText> mEditTextList;
     private ArrayList<Spinner> mSpinnerList;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
     {
         mView = inflater.inflate(R.layout.fragment_grade_point_average, container, false);
 
-        mButton = mView.findViewById(R.id.button);
+        mAddClassButton = mView.findViewById(R.id.button);
+        mDeleteClassButton = mView.findViewById(R.id.delete_button);
+
         fab = mView.findViewById(R.id.floating_action_button);
         mGPATextView = mView.findViewById(R.id.grade_point_average_textview);
         mGPATextView.setVisibility(View.GONE);
@@ -61,7 +62,7 @@ public class GradePointAverage extends Fragment
         mEditTextList = new ArrayList<>();
         mSpinnerList = new ArrayList<>();
 
-        mButton.setOnClickListener(new View.OnClickListener() {
+        mAddClassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
@@ -69,12 +70,35 @@ public class GradePointAverage extends Fragment
                 {
                     Snackbar snackbar = Snackbar.make(view, "10 Classes is MAX", Snackbar.LENGTH_LONG);
                     snackbar.show();
-                    mButton.setEnabled(false);
+                    mAddClassButton.setEnabled(false);
+                    mDeleteClassButton.setEnabled(true);
                 }
                 else
                 {
                     counter = counter + 1;
+                    mDeleteClassButton.setEnabled(true);
+                    mAddClassButton.setEnabled(true);
                     createView(masterLinearLayout, counter, mEditTextList, mSpinnerList);
+                }
+            }
+        });
+
+        // Delete button deletes a view created
+        mDeleteClassButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (masterLinearLayout.getChildCount() <= 0)
+                {
+                    Snackbar snackbar = Snackbar.make(view, "There are 0 Classes", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    mDeleteClassButton.setEnabled(false);
+                }
+                else
+                {
+                    // Reduce the counter by 1 and remove view
+                    counter = counter - 1;
+                    mAddClassButton.setEnabled(true);
+                    removeView(masterLinearLayout, counter);
                 }
             }
         });
@@ -91,6 +115,14 @@ public class GradePointAverage extends Fragment
         return mView;
     }
 
+    // This deletes the views the were created programmatically on click
+    private void removeView(LinearLayout masterLinearLayout, int counter)
+    {
+        masterLinearLayout.removeViewAt(counter);
+    }
+
+    // This creates an EditTextView, a Spinner and a TextView upon request
+    // It also assigns to the UNIQUE IDs
     private void createView(LinearLayout bossLayout, int counter, ArrayList<EditText> mEditTextList, ArrayList<Spinner> mSpinnerList)
     {
         // This creates the ID for all the views created
@@ -143,12 +175,13 @@ public class GradePointAverage extends Fragment
         bossLayout.addView(linearLayout);
     }
 
+    // Returns the GPA to the TextView which converts it to String
     public double calculateGPA()
     {
         NumberFormat numberFormat = new DecimalFormat("#0.00");
         double gradePoints = 0;
         int totalCredits = 0;
-        double gpa = 0;
+        double gpa;
 
         double a;
         double b;
@@ -160,35 +193,28 @@ public class GradePointAverage extends Fragment
                 Snackbar snackbar = Snackbar.make(mView, "Please fill all fields", Snackbar.LENGTH_LONG);
                 snackbar.show();
 
-                ColorStateList colorStateList = ColorStateList.valueOf(Color.RED);
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
-                    mEditTextList.get(i).setBackgroundTintList(colorStateList);
+                    mEditTextList.get(i).setBackgroundTintList(ColorStateList.valueOf(Color.RED));
                 }
-                gradePoints = 0;
-                totalCredits = 0;
-                gpa = 0;
 
                 mEditTextList.get(i).setHint("Please Fill Field");
                 mEditTextList.get(i).setHintTextColor(Color.RED);
+
+                return 0;
             }
 
             else
             {
-                ColorStateList colorStateList = ColorStateList.valueOf(Color.parseColor("#80d6ff"));
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
-                    mEditTextList.get(i).setBackgroundTintList(colorStateList);
+                    mEditTextList.get(i).setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#80d6ff")));
                 }
 
                 a = Integer.valueOf(mEditTextList.get(i).getText().toString());
                 b = gradeValueFromSpinner(mSpinnerList.get(i).getSelectedItem().toString());
 
-                //FOR EACH CLASS = credit * grade
                 gradePoints = gradePoints + (a * b);
-
                 totalCredits = totalCredits + Integer.valueOf(mEditTextList.get(i).getText().toString());   //FOR EACH CLASS = sum credits up
 
                 hideKeyboardFrom(getContext(), mView);
@@ -200,6 +226,7 @@ public class GradePointAverage extends Fragment
         return Double.valueOf(numberFormat.format(gpa));
     }
 
+    // This returns the value of the Spinner
     public double gradeValueFromSpinner(String letterGrade)
     {
         switch (letterGrade)
@@ -231,7 +258,10 @@ public class GradePointAverage extends Fragment
         }
     }
 
-    public static void hideKeyboardFrom(Context context, View view) {
+    // I got this bit of code from https://stackoverflow.com/questions/1109022/close-hide-the-android-soft-keyboard
+    // It hides the soft keyboard upon request
+    public static void hideKeyboardFrom(Context context, View view)
+    {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
