@@ -3,6 +3,22 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_another_class">Add Another Class</string>
-    <string name="delete_class">delete last class</string>
+    <string name="add_another_class">Add Class</string>
+    <string name="Calculate">Add Assignments</string>
+    <string name="delete_class">Delete class</string>
+
+    <string name="class_name">Class Name</string>
+    <string name="credit_hours">Credit Hours</string>
+    <string name="addRubric">Add Assignment</string>
+    <string name="addHomework">ADD Homework</string>
+    <string name="addTest">ADD Test</string>
+    <string name="addQuiz">Add Quiz</string>
+    <string name="addFinal">ADD final</string>
+    <string name="addOther">ADD other</string>
+    <string name="delete_button1">Delete HomeWork</string>
+    <string name="delete_test2">Delete Test</string>
+    <string name="delete_quiz3">Delete Quiz</string>
+    <string name="delete_other4">Delete Other</string>
 </resources>
+
+

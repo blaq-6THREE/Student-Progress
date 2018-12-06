@@ -54,6 +54,8 @@ public class GradePointAverage extends Fragment
         mGPATextView = mView.findViewById(R.id.grade_point_average_textview);
         mGPATextView.setVisibility(View.GONE);
         masterLinearLayout = mView.findViewById(R.id.linear_layout_master);
+        masterLinearLayout.setAlpha(0.8f);
+        masterLinearLayout.setBackgroundColor(Color.parseColor("#ced9dd"));
 
         creditsID = 0;
         spinnerID = 0;
@@ -70,7 +72,7 @@ public class GradePointAverage extends Fragment
                 {
                     Snackbar snackbar = Snackbar.make(view, "10 Classes is MAX", Snackbar.LENGTH_LONG);
                     snackbar.show();
-                    mAddClassButton.setEnabled(false);
+                    //mAddClassButton.setEnabled(false);
                     mDeleteClassButton.setEnabled(true);
                 }
                 else
@@ -108,6 +110,7 @@ public class GradePointAverage extends Fragment
             public void onClick(View view) {
                 mGPATextView.setText(String.valueOf(calculateGPA()));
                 mGPATextView.setVisibility(View.VISIBLE);
+                hideKeyboardFrom(getContext(), mView);
                 calculateGPA();
             }
         });
@@ -211,13 +214,13 @@ public class GradePointAverage extends Fragment
                     mEditTextList.get(i).setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#80d6ff")));
                 }
 
+                mEditTextList.get(i).setHint("Please Fill Field");
+
                 a = Integer.valueOf(mEditTextList.get(i).getText().toString());
                 b = gradeValueFromSpinner(mSpinnerList.get(i).getSelectedItem().toString());
 
                 gradePoints = gradePoints + (a * b);
                 totalCredits = totalCredits + Integer.valueOf(mEditTextList.get(i).getText().toString());   //FOR EACH CLASS = sum credits up
-
-                hideKeyboardFrom(getContext(), mView);
             }
         }
 
@@ -260,7 +263,7 @@ public class GradePointAverage extends Fragment
 
     // I got this bit of code from https://stackoverflow.com/questions/1109022/close-hide-the-android-soft-keyboard
     // It hides the soft keyboard upon request
-    public static void hideKeyboardFrom(Context context, View view)
+    public void hideKeyboardFrom(Context context, View view)
     {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

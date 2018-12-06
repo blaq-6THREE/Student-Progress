@@ -1,14 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".ProgressTracker">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="6dp"
+    tools:context=".ProgressTracker">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linear_layout_master"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/HW_color"
+                android:orientation="vertical">
+
+                <!-- TODO: Updated blank linearLayout in .java file -->
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/addHomework"
+                    android:text="@string/addHomework"
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/delete_button"
+                    android:text="@string/delete_button1"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_text"/>
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linear_layout_master2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Test_color"
+                android:orientation="vertical">
+
+                <!-- TODO: Updated blank linearLayout in .java file -->
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/addTest"
+                    android:text="@string/addTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    style="@style/Widget.AppCompat.Button.Colored"/>
+
+                <Button
+                    android:id="@+id/delete_test2"
+                    android:text="@string/delete_test2"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_text"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_master3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Quiz_colro"
+                android:orientation="vertical">
+
+                <!-- TODO: Updated blank linearLayout in .java file -->
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/addQuiz"
+                    android:text="@string/addQuiz"
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/delete_quiz3"
+                    android:text="@string/delete_quiz3"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_master4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Other_color"
+                android:orientation="vertical">
+
+                <!-- TODO: Updated blank linearLayout in .java file -->
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/addOther"
+                    android:text="@string/addOther"
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/delete_other4"
+                    android:text="@string/delete_other4"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/progress_tracker_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="99"
+                android:textColor="#567D46"
+                android:textSize="90sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_action_button_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_black_24dp" />
+
+</android.support.design.widget.CoordinatorLayout>
